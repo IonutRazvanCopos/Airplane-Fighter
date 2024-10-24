@@ -13,23 +13,25 @@ h1 {
     background-color: skyblue;
     padding: 20%;
     margin: 0px;
-    margin-top: 2.5px;
     margin-left: 25%;
     margin-right: 25%;
     border: 2px solid black;
+    table-layout: auto;
+    position: relative;
 }
 
 #plane {
     position: absolute;
     height: 100px;
     width: 100px;
-    margin-top: 16%;
-    margin-left: 2%;
+    top: 90%;
+    left: 50%;
 }
 
   canvas {
     position: absolute;
-    width: 49.8%;
-    margin-top: -24%;
-    margin-left: -20%;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
   }
