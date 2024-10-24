@@ -1,24 +1,32 @@
-let plane = document.getElementById("plane");
 let game = document.getElementById("game");
 
 document.addEventListener("mousemove", mouseMoveHandler, false);
 
+let plane = {
+    element: document.getElementById("plane"),
+    imgFile: "/plane.png",
+    x: 300,
+    y: 200,
+    width: 100,
+    height: 100
+}
+
 function mouseMoveHandler(e) {
     const relativeX = e.clientX - game.offsetLeft;
+    let n = relativeX - game.offsetLeft;
 
     if (relativeX > 0 && relativeX < game.offsetWidth) {
-    let x = e.clientX;
-    plane.style.left = x - 100 + "px";
+        plane.element.style.left = relativeX - 50 + "px";
     }
 }
 
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
-let spawnLineY = 28;
+let spawnLineY = 0;
 let spawnRate = 1500;
 let spawnRateOfDescent = 3;
-let lastSpawn = -1;
+let lastSpawn = 1;
 let objects = [];
 let startTime = Date.now();
 
@@ -37,7 +45,7 @@ function spawnRandomObject() {
     let object = {
         type: t,
         x: Math.random() * (canvas.width - 30) + 15,
-        y: spawnLineY,
+        y: spawnLineY
     }
 
     objects.push(object);
@@ -64,25 +72,21 @@ function animate() {
         let object = objects[i];
         object.y += spawnRateOfDescent;
         ctx.beginPath();
-        ctx.arc(object.x, object.y, 8, 0, Math.PI * 2);
+        ctx.arc(object.x, object.y, 15, 0, Math.PI * 2);
         ctx.closePath();
         ctx.fillStyle = object.type;
         ctx.fill();
-        if (collision(plane, object) == true) {
-            alert("STOP");
+        if (
+            (canvas.height - plane.y + 150 <= object.y)
+        ) {
             spawnRateOfDescent = 0;
+            spawnRate *= 100;
         }
     }
 }
 
-
-function collision(a, b) {
-    if (
-        b.x + b.width >= a.x &&
-        b.x <= a.x + a.width &&
-        b.y + b.height >= a.y &&
-        b.y <= a.y + a.height
-    ) {
+function isCollide(plane, object) {
+    if (object.y == plane.y + plane.height + 50) {
         return true;
     }
     return false;
