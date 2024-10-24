@@ -72,7 +72,7 @@ function animate() {
         let object = objects[i];
         object.y += spawnRateOfDescent;
         ctx.beginPath();
-        ctx.arc(object.x, object.y, 15, 0, Math.PI * 2);
+        ctx.arc(object.x, object.y, 13, 0, Math.PI * 2);
         ctx.closePath();
         ctx.fillStyle = object.type;
         ctx.fill();
@@ -83,11 +83,4 @@ function animate() {
             spawnRate *= 100;
         }
     }
-}
-
-function isCollide(plane, object) {
-    if (object.y == plane.y + plane.height + 50) {
-        return true;
-    }
-    return false;
 }
