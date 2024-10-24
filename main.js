@@ -13,7 +13,6 @@ let plane = {
 
 function mouseMoveHandler(e) {
     const relativeX = e.clientX - game.offsetLeft;
-    let n = relativeX - game.offsetLeft;
 
     if (relativeX > 0 && relativeX < game.offsetWidth) {
         plane.element.style.left = relativeX - 50 + "px";
