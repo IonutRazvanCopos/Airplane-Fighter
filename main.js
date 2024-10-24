@@ -28,8 +28,6 @@ document.addEventListener("mousemove", mouseMoveHandler, false);
 
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
-let img = new Image();
-img.src = '/asteroid.png';
 
 let spawnLineY = 0;
 let spawnRate = 1200;
