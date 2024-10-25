@@ -1,23 +1,23 @@
 h1 {
-    text-align: center;
-    color: white;
-    background-color: black;
-    padding: 10px;
-    margin: 0px;
-    margin-left: 25%;
-    margin-right: 25%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  color: white;
+  background-color: black;
+  padding: 10px;
+  margin: 0px;
+  margin-left: 25%;
+  margin-right: 25%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #game {
-    background-image: url(/universe.jpg);
-    padding: 20%;
-    margin: 0px;
-    margin-left: 25%;
-    margin-right: 25%;
-    border: 6px solid black;
-    table-layout: auto;
-    position: relative;
+  background-image: url(/universe.jpg);
+  padding: 20%;
+  margin: 0px;
+  margin-left: 25%;
+  margin-right: 25%;
+  border: 6px solid black;
+  table-layout: auto;
+  position: relative;
 }
 
 canvas {
@@ -29,11 +29,12 @@ canvas {
 }
 
 #plane {
-    position: absolute;
-    height: 100px;
-    width: 100px;
-    top: 90%;
-    left: 50%;
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  top: 90%;
+  left: 50%;
+  transform: rotate(270deg);
 }
 
 #score {
@@ -57,4 +58,12 @@ canvas {
 
 html {
   background-color: darkblue;
+}
+
+@media (max-width: 2000px) {
+  #plane {
+    width: 80px;
+    height: 80px;
+    left: 45%;
+  }
 }
