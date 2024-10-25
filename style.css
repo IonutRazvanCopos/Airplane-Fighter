@@ -60,10 +60,11 @@ html {
   background-color: darkblue;
 }
 
-@media (max-width: 2000px) {
-  #plane {
-    width: 80px;
-    height: 80px;
-    left: 45%;
+@media (min-width: 992px) {
+  body {
+    transform: scale(0.75);
+    transform-origin: 0 0;
+    width: 133.33%;
+    overflow-x: hidden;
   }
 }
