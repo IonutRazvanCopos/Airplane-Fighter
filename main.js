@@ -35,7 +35,7 @@ meteorit.src = '/asteroid.png';
 
 let spawnLineY = 0;
 let spawnRate = 1200;
-let spawnRateOfDescent = 8;
+let spawnRateOfDescent = 10;
 let lastSpawn = 1;
 let objects = [];
 let startTime = Date.now();
@@ -78,7 +78,7 @@ function animate() {
         if (isCollide(plane, object)) {
             spawnRateOfDescent = 0;
         }
-        if (object.y > canvas.height) {
+        if (object.y - 40 > canvas.height) {
             object.y = null;
             updatePoints();
         }
@@ -90,7 +90,7 @@ function isCollide(airplane, meteorit) {
         ((airplane.y + 10 <= meteorit.y &&
             airplane.x + 30 >= meteorit.x &&
             airplane.x - 30 <= meteorit.x)  ||
-            ((airplane.y + 70 <= meteorit.y &&
+            ((airplane.y + 80 <= meteorit.y &&
             airplane.x + 80 >= meteorit.x &&
             airplane.x - 80 <= meteorit.x))
         )
@@ -107,9 +107,9 @@ function updatePoints() {
     ++points;
     score.innerHTML = "Score:" + ` ${points}`
     if (points == 50) {
-        spawnRateOfDescent = 9;
+        spawnRateOfDescent = 11;
     } else if (points == 150) {
-        spawnRateOfDescent = 10;
+        spawnRateOfDescent = 12;
     }
 }
 
