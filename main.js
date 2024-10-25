@@ -15,7 +15,7 @@ let plane = {
     y: 930,
     width: 100,
     height: 100
-}
+};
 
 function mouseMoveHandler(e) {
     const canvasRect = canvas.getBoundingClientRect();
@@ -52,7 +52,7 @@ function spawnRandomObject() {
         type: t,
         x: Math.random() * (canvas.width - 30) + 15,
         y: spawnLineY
-    }
+    };
 
     objects.push(object);
 }
