@@ -93,12 +93,12 @@ function animate() {
 
 function isCollide(airplane, meteorit) {
     if (
-        ((airplane.y <= meteorit.y &&
+        ((airplane.y + 10 <= meteorit.y &&
             airplane.x + 30 >= meteorit.x &&
-            airplane.x - 30 <= meteorit.x) ||
-        ((airplane.y <= meteorit.y &&
-        airplane.x + 65 >= meteorit.x &&
-        airplane.x - 65 <= meteorit.x))
+            airplane.x - 30 <= meteorit.x)  ||
+            ((airplane.y + 70 <= meteorit.y &&
+            airplane.x + 80 >= meteorit.x &&
+            airplane.x - 80 <= meteorit.x))
         )
     ) {
         gameOver = true;
