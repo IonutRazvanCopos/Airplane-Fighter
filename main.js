@@ -45,12 +45,6 @@ animate();
 function spawnRandomObject() {
 
     let t;
-
-    if (Math.random() < 0.50) {
-        t = "red";
-    } else {
-        t = "blue";
-    }
     
     let object = {
         type: t,
