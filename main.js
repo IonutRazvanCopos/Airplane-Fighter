@@ -19,15 +19,19 @@ let plane = {
 
 function mouseMoveHandler(e) {
     const canvasRect = canvas.getBoundingClientRect();
-    const relativeX = e.clientX - canvasRect.left;
-    if (relativeX > 0 && relativeX < canvasRect.width) {
+    const relativeX = (e.clientX - canvasRect.left) * (canvas.width / canvasRect.width);
+
+    if (relativeX > plane.width / 2 && relativeX < canvas.width - plane.width / 2) {
         plane.x = relativeX;
         plane.element.style.left = relativeX - plane.width / 2 + "px";
     }
 }
 
+
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
+let meteorit = new Image();
+meteorit.src = '/asteroid.png';
 
 let spawnLineY = 0;
 let spawnRate = 1200;
@@ -76,11 +80,7 @@ function animate() {
     for (let i = 0; i < objects.length; ++i) {
         let object = objects[i];
         object.y += spawnRateOfDescent;
-        ctx.beginPath();
-        ctx.arc(object.x, object.y, 40, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.fillStyle = object.type;
-        ctx.fill();
+        ctx.drawImage(meteorit, object.x - 80, object.y - 120, 160, 200);
         if (isCollide(plane, object)) {
             spawnRateOfDescent = 0;
         }
