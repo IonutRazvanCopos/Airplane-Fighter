@@ -9,22 +9,22 @@ game.append(score);
 
 document.addEventListener("mousemove", mouseMoveHandler, false);
 
-    let plane = {
-        element: document.getElementById("plane"),
-        x: 634,
-        y: 930,
-        width: 100,
-        height: 100
-    }
+let plane = {
+    element: document.getElementById("plane"),
+    x: 634,
+    y: 930,
+    width: 100,
+    height: 100
+}
 
-    function mouseMoveHandler(e) {
-        const canvasRect = canvas.getBoundingClientRect();
-        const relativeX = e.clientX - canvasRect.left;
-        if (relativeX > 0 && relativeX < canvasRect.width) {
-            plane.x = relativeX;
-            plane.element.style.left = relativeX - plane.width / 2 + "px";
-        }
+function mouseMoveHandler(e) {
+    const canvasRect = canvas.getBoundingClientRect();
+    const relativeX = e.clientX - canvasRect.left;
+    if (relativeX > 0 && relativeX < canvasRect.width) {
+        plane.x = relativeX;
+        plane.element.style.left = relativeX - plane.width / 2 + "px";
     }
+}
 
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
@@ -93,10 +93,10 @@ function animate() {
 
 function isCollide(airplane, meteorit) {
     if (
-        ((airplane.y + 10 <= meteorit.y &&
+        ((airplane.y <= meteorit.y &&
             airplane.x + 30 >= meteorit.x &&
             airplane.x - 30 <= meteorit.x) ||
-        ((airplane.y + 50 <= meteorit.y &&
+        ((airplane.y <= meteorit.y &&
         airplane.x + 65 >= meteorit.x &&
         airplane.x - 65 <= meteorit.x))
         )
