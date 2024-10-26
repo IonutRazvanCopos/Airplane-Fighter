@@ -1,11 +1,31 @@
-let game = document.getElementById("game");
+const game = document.getElementById("game");
 let points = 0;
 let gameOver = false;
+
+let txt = document.createElement('div');
+txt.id = 'gameOver';
 
 let score = document.createElement("div");
 score.id = "score";
 score.innerHTML = "Score:"+ ` ${points}`
 game.append(score);
+
+const meteoriteWidth = 160, meteoriteHeight = 200;
+const posMeteoriteX = 80, posMeteoriteY = 120;
+const lateralLength = 30, collisionHeight = 10, lateralMid = 80, bottomLine = 40;
+const level1 = 50, level2 = 150;
+
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+const meteorite = new Image();
+meteorite.src = '/asteroid.png';
+
+const spawnLineY = 0;
+let spawnRate = 1200;
+let spawnRateOfDescent = 10;
+let lastSpawn = 1;
+let objects = [];
+const startTime = Date.now();
 
 document.addEventListener("mousemove", mouseMoveHandler, false);
 
@@ -27,21 +47,6 @@ function mouseMoveHandler(e) {
     }
 }
 
-
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-let meteorit = new Image();
-meteorit.src = '/asteroid.png';
-
-let spawnLineY = 0;
-let spawnRate = 1200;
-let spawnRateOfDescent = 10;
-let lastSpawn = 1;
-let objects = [];
-let startTime = Date.now();
-
-animate();
-
 function spawnRandomObject() {
     let object = {
         x: Math.random() * (canvas.width - 30) + 15,
@@ -50,45 +55,47 @@ function spawnRandomObject() {
     objects.push(object);
 }
 
-function animate() {
-    let time = Date.now();
+function moveObjects() {
+    const time = Date.now();
 
     if (time > (lastSpawn + spawnRate) && !gameOver) {
         lastSpawn = time;
         spawnRandomObject();
     }
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame(moveObjects);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < objects.length; ++i) {
         let object = objects[i];
         object.y += spawnRateOfDescent;
-        ctx.drawImage(meteorit, object.x - 80, object.y - 120, 160, 200);
-        if (isCollide(plane, object)) {
+        ctx.drawImage(meteorite, object.x - posMeteoriteX, object.y - posMeteoriteY, meteoriteWidth, meteoriteHeight);
+        if (isColliding(plane, object)) {
             spawnRateOfDescent = 0;
+            gameOver = true;
+            updateText();
+            document.removeEventListener("mousemove", mouseMoveHandler, false);
         }
-        if (object.y - 40 > canvas.height) {
+        if (object.y - bottomLine > canvas.height) {
             object.y = null;
             updatePoints();
         }
     }
 }
 
-function isCollide(airplane, meteorit) {
+moveObjects();
+
+function isColliding(airplane, meteorite) {
     if (
-        ((airplane.y + 10 <= meteorit.y &&
-            airplane.x + 30 >= meteorit.x &&
-            airplane.x - 30 <= meteorit.x)  ||
-            ((airplane.y + 80 <= meteorit.y &&
-            airplane.x + 80 >= meteorit.x &&
-            airplane.x - 80 <= meteorit.x))
+        ((airplane.y + collisionHeight <= meteorite.y &&
+        airplane.x + lateralLength >= meteorite.x &&
+        airplane.x - lateralLength <= meteorite.x)  ||
+        ((airplane.y + lateralMid <= meteorite.y &&
+        airplane.x + lateralMid >= meteorite.x &&
+        airplane.x - lateralMid <= meteorite.x))
         )
     ) {
-        gameOver = true;
-        updateText();
-        document.removeEventListener("mousemove", mouseMoveHandler, false);
         return true;
     }
     return false;
@@ -97,15 +104,12 @@ function isCollide(airplane, meteorit) {
 function updatePoints() {
     ++points;
     score.innerHTML = "Score:" + ` ${points}`
-    if (points == 50) {
+    if (points === level1) {
         spawnRateOfDescent = 11;
-    } else if (points == 150) {
+    } else if (points === level2) {
         spawnRateOfDescent = 12;
     }
 }
-
-let txt = document.createElement('div');
-txt.id = 'gameOver';
 
 function updateText() {
     if (gameOver) {
