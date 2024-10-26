@@ -11,7 +11,7 @@ document.addEventListener("mousemove", mouseMoveHandler, false);
 
 let plane = {
     element: document.getElementById("plane"),
-    x: 634,
+    x: document.getElementById("canvas").width / 2,
     y: 930,
     width: 100,
     height: 100
@@ -43,15 +43,10 @@ let startTime = Date.now();
 animate();
 
 function spawnRandomObject() {
-
-    let t;
-    
     let object = {
-        type: t,
         x: Math.random() * (canvas.width - 30) + 15,
         y: spawnLineY
     };
-
     objects.push(object);
 }
 
@@ -66,10 +61,6 @@ function animate() {
     requestAnimationFrame(animate);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.beginPath();
-    ctx.moveTo(0, spawnLineY);
-    ctx.lineTo(canvas.width, spawnLineY);
 
     for (let i = 0; i < objects.length; ++i) {
         let object = objects[i];
