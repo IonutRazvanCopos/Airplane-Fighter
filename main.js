@@ -105,9 +105,9 @@ function updatePoints() {
     ++points;
     score.innerHTML = "Score:" + ` ${points}`
     if (points === level1) {
-        spawnRateOfDescent = 11;
+        ++spawnRateOfDescent;
     } else if (points === level2) {
-        spawnRateOfDescent = 12;
+        ++spawnRateOfDescent;
     }
 }
 
