@@ -104,9 +104,7 @@ function isColliding(airplane, meteorite) {
 function updatePoints() {
     ++points;
     score.innerHTML = "Score:" + ` ${points}`
-    if (points === level1) {
-        ++spawnRateOfDescent;
-    } else if (points === level2) {
+    if (points === level1 || points === level2) {
         ++spawnRateOfDescent;
     }
 }
