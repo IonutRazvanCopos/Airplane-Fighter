@@ -1,6 +1,6 @@
 const game = document.getElementById("game");
 let points = 0;
-const pointsText = `${points}`;
+let pointsText = `${points}`;
 let gameOver = false;
 
 let txt = document.createElement('div');
@@ -101,6 +101,7 @@ function isColliding(airplane, meteorite) {
 
 function updatePoints() {
     ++points;
+    pointsText = `${points}`;
     score.innerHTML = "Score: " + pointsText;
     if (points === level1 || points === level2) {
         ++spawnRateOfDescent;
