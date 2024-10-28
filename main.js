@@ -1,5 +1,6 @@
 const game = document.getElementById("game");
 let points = 0;
+const pointsText = `${points}`;
 let gameOver = false;
 
 let txt = document.createElement('div');
@@ -7,7 +8,7 @@ txt.id = 'gameOver';
 
 let score = document.createElement("div");
 score.id = "score";
-score.innerHTML = "Score:"+ ` ${points}`
+score.innerHTML = "Score: "+ pointsText;
 game.append(score);
 
 const meteoriteWidth = 160, meteoriteHeight = 200;
@@ -87,7 +88,7 @@ function moveObjects() {
 moveObjects();
 
 function isColliding(airplane, meteorite) {
-    if (
+    return (
         ((airplane.y + collisionHeight <= meteorite.y &&
         airplane.x + lateralLength >= meteorite.x &&
         airplane.x - lateralLength <= meteorite.x)  ||
@@ -95,15 +96,12 @@ function isColliding(airplane, meteorite) {
         airplane.x + lateralMid >= meteorite.x &&
         airplane.x - lateralMid <= meteorite.x))
         )
-    ) {
-        return true;
-    }
-    return false;
+    );
 }
 
 function updatePoints() {
     ++points;
-    score.innerHTML = "Score:" + ` ${points}`
+    score.innerHTML = "Score: " + pointsText;
     if (points === level1 || points === level2) {
         ++spawnRateOfDescent;
     }
@@ -112,6 +110,6 @@ function updatePoints() {
 function updateText() {
     if (gameOver) {
         game.append(txt);
-        txt.innerHTML = 'Game Over! Congrats for your score:' + ` ${points}!`;
+        txt.innerHTML = 'Game Over! Congrats for your score: ' + pointsText;
     }
 }
