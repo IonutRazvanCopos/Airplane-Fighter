@@ -16,6 +16,7 @@ const posMeteoriteX = 80, posMeteoriteY = 120;
 const lateralLength = 30, collisionHeight = 10, lateralMid = 80, bottomLine = 40;
 const level1 = 50, level2 = 150;
 const bulletWidth = 10, bulletHeight = 50;
+const nextLevel = 100;
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -27,9 +28,9 @@ const bullet = new Image();
 bullet.src = '/bullet.png';
 
 const spawnLineY = 0;
-let spawnRate = 800;
-let spawnRateOfDescent = 12;
-let lastSpawn = 1;
+let spawnRate = 600;
+let spawnRateOfDescent = 10;
+let lastSpawn = -1;
 let objects = [];
 let bullets = [];
 const startTime = Date.now();
@@ -79,14 +80,11 @@ function moveObjects() {
         let object = objects[i];
         object.y += spawnRateOfDescent;
         ctx.drawImage(meteorite, object.x - posMeteoriteX, object.y - posMeteoriteY, meteoriteWidth, meteoriteHeight);
-        if (isColliding(plane, object) && !gameOver) {
+        if ((isColliding(plane, object) && !gameOver) || (object.y - bottomLine > canvas.height)) {
             spawnRateOfDescent = 0;
             gameOver = true;
             updateText();
             document.removeEventListener("mousemove", mouseMoveHandler, false);
-        }
-        if (object.y - bottomLine > canvas.height) {
-            object.y = null;
         }
     }
 }
@@ -119,7 +117,7 @@ function updatePoints() {
     pointsText = `${points}`;
     score.innerHTML = "Score: " + pointsText;
     if (points === level1 || points === level2) {
-        spawnRateOfDescent += 2;
+        spawnRate -= nextLevel;
     }
 }
 
