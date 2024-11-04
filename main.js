@@ -21,11 +21,11 @@ const nextLevel = 100;
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const meteorite = new Image();
-meteorite.src = '/asteroid.png';
+meteorite.src = 'asteroid.png';
 const bulletCanvas = document.getElementById("bullet");
 const ctxBullet = bulletCanvas.getContext("2d");
 const bullet = new Image();
-bullet.src = '/bullet.png';
+bullet.src = 'bullet.png';
 
 const spawnLineY = 0;
 let spawnRate = 600;
