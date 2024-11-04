@@ -2,7 +2,6 @@ const game = document.getElementById("game");
 let points = 0;
 let pointsText = `${points}`;
 let gameOver = false;
-let bulletObject = 0;
 
 let txt = document.createElement('div');
 txt.id = 'gameOver';
