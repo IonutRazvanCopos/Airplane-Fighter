@@ -67,5 +67,14 @@ html {
     transform-origin: 0 0;
     width: 133.33%;
     overflow-x: hidden;
+    overflow-y: hidden;
   }
+}
+
+#bullet {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
