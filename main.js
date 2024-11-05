@@ -37,7 +37,7 @@ const startTime = Date.now();
 
 document.addEventListener("mousemove", mouseMoveHandler, false);
 
-let plane = {
+const plane = {
     element: document.getElementById("plane"),
     x: document.getElementById("canvas").width / 2,
     y: 930,
@@ -56,20 +56,39 @@ function mouseMoveHandler(e) {
 }
 
 function spawnRandomObject() {
-    let object = {
+    const object = {
         x: Math.random() * (canvas.width - 30) + 15,
         y: spawnLineY
     };
     objects.push(object);
 }
 
-function moveObjects() {
+function spawnBullet() {
+    const bulletObj = {
+        x: plane.x,
+        y: plane.y
+    };
+
+    bullets.push(bulletObj);
+}
+
+function draw(bulletObj) {
+    ctxBullet.drawImage(bullet, bulletObj.x, bulletObj.y, bulletWidth, bulletHeight);
+}
+
+function spawnTime() {
     const time = Date.now();
 
     if (time > (lastSpawn + spawnRate) && !gameOver) {
         lastSpawn = time;
         spawnRandomObject();
     }
+    requestAnimationFrame(spawnTime);
+}
+
+spawnTime();
+
+function moveObjects() {
 
     requestAnimationFrame(moveObjects);
 
@@ -86,6 +105,26 @@ function moveObjects() {
             document.removeEventListener("mousemove", mouseMoveHandler, false);
         }
     }
+
+    if (bullets.length > 0) {
+        ctxBullet.clearRect(0, 0, bulletCanvas.width, bulletCanvas.height);
+
+        bullets.forEach((bulletObj, bulletIndex) => {
+            bulletObj.y -= 20;
+            draw(bulletObj);
+            objects.forEach((object, objectIndex) => {
+                if (shotCollision(bulletObj, object)) {
+                    bullets.splice(bulletIndex, 1);
+                    objects.splice(objectIndex, 1);
+                    updatePoints();
+                }
+            });
+    
+            if (bulletObj.y < -bulletHeight) {
+                bullets.splice(bulletIndex, 1);
+            }
+        });
+    }
 }
 
 moveObjects();
@@ -99,6 +138,14 @@ function isColliding(airplane, meteorite) {
         airplane.x + lateralMid >= meteorite.x &&
         airplane.x - lateralMid <= meteorite.x))
         )
+    );
+}
+
+function shotCollision(bllt, meteorite) {
+    return (
+        bllt.y < meteorite.y &&
+        bllt.x >= meteorite.x - bulletHeight &&
+        bllt.x <= meteorite.x + bulletHeight
     );
 }
 
@@ -118,59 +165,8 @@ function updateText() {
     }
 }
 
-function spawnBullet() {
-    let bulletObj = {
-        x: plane.x,
-        y: plane.y
-    };
-
-    bullets.push(bulletObj);
-}
-
-function draw(bulletObj) {
-    ctxBullet.drawImage(bullet, bulletObj.x, bulletObj.y, bulletWidth, bulletHeight);
-}
-
-function moveBullet() {
-    ctxBullet.clearRect(0, 0, bulletCanvas.width, bulletCanvas.height);
-
-    bullets.forEach((bulletObj, bulletIndex) => {
-        bulletObj.y -= 20;
-        draw(bulletObj);
-        objects.forEach((object, objectIndex) => {
-            if (shotCollision(bulletObj, object)) {
-                bullets.splice(bulletIndex, 1);
-                objects.splice(objectIndex, 1);
-                updatePoints();
-            }
-        });
-
-        if (bulletObj.y < -bulletHeight) {
-            bullets.splice(bulletIndex, 1);
-        }
-    });
-
-    requestAnimationFrame(moveBullet);
-}
-
-
-function shotCollision(bllt, meteorite) {
-    return (
-        bllt.y < meteorite.y &&
-        bllt.x >= meteorite.x - bulletHeight &&
-        bllt.x <= meteorite.x + bulletHeight
-    );
-}
-
-
-function shot() {
-    spawnBullet();
-}
-
-moveBullet();
-
 game.addEventListener("click", () => {
     if (!gameOver) {
-        shot();
+        spawnBullet();
     }
 });
