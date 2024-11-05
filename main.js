@@ -76,7 +76,6 @@ function moveObjects() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < objects.length; ++i) {
-        numberOfMeteorites = i;
         let object = objects[i];
         object.y += spawnRateOfDescent;
         ctx.drawImage(meteorite, object.x - posMeteoriteX, object.y - posMeteoriteY, meteoriteWidth, meteoriteHeight);
@@ -90,15 +89,6 @@ function moveObjects() {
 }
 
 moveObjects();
-
-function shotCollision(bllt, meteorite) {
-    if (
-        (bllt.y <= meteorite.y - 10)
-    ) {
-        return true;
-    }
-    return false;
-}
 
 function isColliding(airplane, meteorite) {
     return (
@@ -133,8 +123,6 @@ function spawnBullet() {
         x: plane.x,
         y: plane.y
     };
-
-    console.log("bullet");
 
     bullets.push(bulletObj);
 }
