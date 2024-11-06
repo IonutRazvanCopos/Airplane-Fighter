@@ -72,7 +72,7 @@ function spawnBullet() {
     bullets.push(bulletObj);
 }
 
-function draw(bulletObj) {
+function bulletPropulsion(bulletObj) {
     ctxBullet.drawImage(bullet, bulletObj.x, bulletObj.y, bulletWidth, bulletHeight);
 }
 
@@ -89,7 +89,6 @@ function spawnTime() {
 spawnTime();
 
 function moveObjects() {
-
     requestAnimationFrame(moveObjects);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -111,7 +110,7 @@ function moveObjects() {
 
         bullets.forEach((bulletObj, bulletIndex) => {
             bulletObj.y -= 20;
-            draw(bulletObj);
+            bulletPropulsion(bulletObj);
             objects.forEach((object, objectIndex) => {
                 if (shotCollision(bulletObj, object)) {
                     bullets.splice(bulletIndex, 1);
