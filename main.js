@@ -32,7 +32,6 @@ let spawnRate = 600;
 let spawnRateOfDescent = 10;
 let lastSpawn = -1;
 let objects = [];
-let bullets = [];
 const startTime = Date.now();
 
 document.addEventListener("mousemove", mouseMoveHandler, false);
@@ -57,6 +56,7 @@ function mouseMoveHandler(e) {
 
 function spawnRandomObject() {
     const object = {
+        type: 'meteorite',
         x: Math.random() * (canvas.width - 30) + 15,
         y: spawnLineY
     };
@@ -65,11 +65,12 @@ function spawnRandomObject() {
 
 function spawnBullet() {
     const bulletObj = {
+        type: 'bullet',
         x: plane.x,
         y: plane.y
     };
 
-    bullets.push(bulletObj);
+    objects.push(bulletObj);
 }
 
 function bulletPropulsion(bulletObj) {
@@ -92,38 +93,36 @@ function moveObjects() {
     requestAnimationFrame(moveObjects);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctxBullet.clearRect(0, 0, bulletCanvas.width, bulletCanvas.height);
 
-    for (let i = 0; i < objects.length; ++i) {
-        let object = objects[i];
-        object.y += spawnRateOfDescent;
-        ctx.drawImage(meteorite, object.x - posMeteoriteX, object.y - posMeteoriteY, meteoriteWidth, meteoriteHeight);
-        if ((isColliding(plane, object) && !gameOver) || (object.y - bottomLine > canvas.height)) {
-            spawnRateOfDescent = 0;
-            gameOver = true;
-            updateText();
-            document.removeEventListener("mousemove", mouseMoveHandler, false);
-        }
-    }
-
-    if (bullets.length > 0) {
-        ctxBullet.clearRect(0, 0, bulletCanvas.width, bulletCanvas.height);
-
-        bullets.forEach((bulletObj, bulletIndex) => {
-            bulletObj.y -= 20;
-            bulletPropulsion(bulletObj);
-            objects.forEach((object, objectIndex) => {
-                if (shotCollision(bulletObj, object)) {
-                    bullets.splice(bulletIndex, 1);
-                    objects.splice(objectIndex, 1);
+    objects.forEach((object, index) => {
+        if (object.type === 'meteorite') {
+            object.y += spawnRateOfDescent;
+            ctx.drawImage(meteorite, object.x - posMeteoriteX, object.y - posMeteoriteY, meteoriteWidth, meteoriteHeight);
+            
+            if ((isColliding(plane, object) && !gameOver) || (object.y - bottomLine > canvas.height)) {
+                spawnRateOfDescent = 0;
+                gameOver = true;
+                updateText();
+                document.removeEventListener("mousemove", mouseMoveHandler, false);
+            }
+        } else if (object.type === 'bullet') {
+            object.y -= 20;
+            bulletPropulsion(object);
+            
+            objects.forEach((target, targetIndex) => {
+                if (target.type === 'meteorite' && shotCollision(object, target)) {
+                    objects.splice(index, 1);
+                    objects.splice(targetIndex, 1); 
                     updatePoints();
                 }
             });
-    
-            if (bulletObj.y < -bulletHeight) {
-                bullets.splice(bulletIndex, 1);
+
+            if (object.y < -bulletHeight) {
+                objects.splice(index, 1);
             }
-        });
-    }
+        }
+    });
 }
 
 moveObjects();
