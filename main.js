@@ -13,10 +13,12 @@ game.append(score);
 
 const meteoriteWidth = 160, meteoriteHeight = 200;
 const posMeteoriteX = 80, posMeteoriteY = 120;
-const lateralLength = 30, collisionHeight = 10, lateralMid = 80, bottomLine = 40;
+const lateralLength = 30, collisionHeight = 10;
+const lateralMid = 80, bottomLine = 40;
 const level1 = 50, level2 = 150;
 const bulletWidth = 10, bulletHeight = 50;
-const nextLevel = 100;
+const nextLevel = 100, half = 2;
+const planeY = 930, planeDim = 100;
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -38,19 +40,22 @@ document.addEventListener("mousemove", mouseMoveHandler, false);
 
 const plane = {
     element: document.getElementById("plane"),
-    x: document.getElementById("canvas").width / 2,
-    y: 930,
-    width: 100,
-    height: 100
+    x: document.getElementById("canvas").width / half,
+    y: planeY,
+    width: planeDim,
+    height: planeDim
 };
 
 function mouseMoveHandler(e) {
     const canvasRect = canvas.getBoundingClientRect();
-    const relativeX = (e.clientX - canvasRect.left) * (canvas.width / canvasRect.width);
+    const firstPart = e.clientX - canvasRect.left;
+    const secondPart = canvas.width / canvasRect.width;
+    const relativeX = firstPart * secondPart;
 
-    if (relativeX > plane.width / 2 && relativeX < canvas.width - plane.width / 2) {
+    if (relativeX > plane.width / half &&
+        relativeX < canvas.width - plane.width / half) {
         plane.x = relativeX;
-        plane.element.style.left = relativeX - plane.width / 2 + "px";
+        plane.element.style.left = relativeX - plane.width / half + "px";
     }
 }
 
@@ -98,9 +103,14 @@ function moveObjects() {
     objects.forEach((object, index) => {
         if (object.type === 'meteorite') {
             object.y += spawnRateOfDescent;
-            ctx.drawImage(meteorite, object.x - posMeteoriteX, object.y - posMeteoriteY, meteoriteWidth, meteoriteHeight);
+            ctx.drawImage(meteorite, object.x - posMeteoriteX, 
+                    object.y - posMeteoriteY, 
+                    meteoriteWidth, meteoriteHeight);
             
-            if ((isColliding(plane, object) && !gameOver) || (object.y - bottomLine > canvas.height)) {
+            if (
+                (isColliding(plane, object) && !gameOver) ||
+                (object.y - bottomLine > canvas.height)
+            ) {
                 spawnRateOfDescent = 0;
                 gameOver = true;
                 updateText();
