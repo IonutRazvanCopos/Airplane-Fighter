@@ -17,7 +17,7 @@ const lateralLength = 30, collisionHeight = 10;
 const lateralMid = 80, bottomLine = 40;
 const level1 = 50, level2 = 150;
 const bulletWidth = 10, bulletHeight = 50;
-const nextLevel = 100, half = 2;
+const nextLevel = 100, half = 2, bulletSpeed = 20;
 const planeY = 930, planeDim = 100;
 
 const canvas = document.getElementById("canvas");
@@ -117,7 +117,7 @@ function moveObjects() {
                 document.removeEventListener("mousemove", mouseMoveHandler, false);
             }
         } else if (object.type === 'bullet') {
-            object.y -= 20;
+            object.y -= bulletSpeed;
             bulletPropulsion(object);
             
             objects.forEach((target, targetIndex) => {
